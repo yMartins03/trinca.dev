@@ -4,40 +4,40 @@
 
 @layer base {
   :root {
-    --background: 0 0% 1.5%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 4%;
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+    --card: 220 36% 9%;
     --card-foreground: 0 0% 98%;
-    --primary: 116 93% 47%;
-    --primary-foreground: 0 0% 2%;
-    --secondary: 247 82% 20%;
+    --primary: 195 96% 55%;
+    --primary-foreground: 222 47% 5%;
+    --secondary: 218 88% 18%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 240 6% 12%;
-    --muted-foreground: 240 5% 67%;
-    --accent: 247 82% 20%;
+    --muted: 219 26% 13%;
+    --muted-foreground: 215 18% 70%;
+    --accent: 158 72% 45%;
     --accent-foreground: 0 0% 98%;
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 116 93% 47%;
-    --radius: 1rem;
+    --border: 217 25% 18%;
+    --input: 217 25% 18%;
+    --ring: 195 96% 55%;
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 0 0% 1.5%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 4%;
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+    --card: 220 36% 9%;
     --card-foreground: 0 0% 98%;
-    --primary: 116 93% 47%;
-    --primary-foreground: 0 0% 2%;
-    --secondary: 247 82% 20%;
+    --primary: 195 96% 55%;
+    --primary-foreground: 222 47% 5%;
+    --secondary: 218 88% 18%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 240 6% 12%;
-    --muted-foreground: 240 5% 67%;
-    --accent: 247 82% 20%;
+    --muted: 219 26% 13%;
+    --muted-foreground: 215 18% 70%;
+    --accent: 158 72% 45%;
     --accent-foreground: 0 0% 98%;
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 116 93% 47%;
+    --border: 217 25% 18%;
+    --input: 217 25% 18%;
+    --ring: 195 96% 55%;
   }
 
   * {
@@ -53,6 +53,10 @@
     overflow-x: hidden;
     font-family:
       Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 14% 8%, rgba(14, 165, 233, 0.12), transparent 30rem),
+      radial-gradient(circle at 82% 2%, rgba(16, 185, 129, 0.08), transparent 24rem),
+      hsl(var(--background));
   }
 }
 
@@ -70,7 +74,7 @@
   }
 
   .contact-link {
-    @apply flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/[0.035] px-5 py-3 text-sm font-medium text-muted-foreground transition hover:border-primary/40 hover:text-primary;
+    @apply flex w-fit items-center gap-3 rounded-lg border border-white/10 bg-white/[0.035] px-5 py-3 text-sm font-medium text-muted-foreground transition hover:border-primary/40 hover:text-primary;
   }
 
   .field {
@@ -80,7 +84,7 @@
   .field input,
   .field select,
   .field textarea {
-    @apply mt-2 w-full rounded-2xl border border-white/10 bg-black/60 px-4 py-3 text-sm text-white outline-none transition placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10;
+    @apply mt-2 w-full rounded-lg border border-white/10 bg-[#08111f]/80 px-4 py-3 text-sm text-white outline-none transition placeholder:text-muted-foreground focus:border-primary/60 focus:ring-4 focus:ring-primary/10;
   }
 }
 
@@ -113,18 +117,18 @@
     min-height: 230px;
     overflow: hidden;
     background:
-      radial-gradient(circle at 20% 20%, rgba(28, 232, 9, 0.22), transparent 28%),
-      radial-gradient(circle at 86% 15%, rgba(18, 9, 92, 0.95), transparent 34%),
-      linear-gradient(145deg, #040404, #101010);
+      radial-gradient(circle at 18% 18%, rgba(56, 189, 248, 0.24), transparent 28%),
+      radial-gradient(circle at 86% 15%, rgba(16, 185, 129, 0.16), transparent 34%),
+      linear-gradient(145deg, #07111f, #0f1d33);
   }
 
   .case-preview::after {
     content: "";
     position: absolute;
     inset: 18%;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 24px;
-    background: rgba(0, 0, 0, 0.36);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 12px;
+    background: rgba(7, 17, 31, 0.62);
     backdrop-filter: blur(14px);
   }
 
@@ -145,7 +149,7 @@
   }
 
   .case-window span:first-child {
-    background: #1ce809;
+    background: #38bdf8;
   }
 
   .case-lines {
@@ -165,7 +169,7 @@
 
   .case-lines i:nth-child(1) {
     width: 78%;
-    background: rgba(28, 232, 9, 0.82);
+    background: rgba(56, 189, 248, 0.82);
   }
 
   .case-lines i:nth-child(2) {
