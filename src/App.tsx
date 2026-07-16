@@ -4,6 +4,7 @@ import {
   Code2,
   Instagram,
   LayoutTemplate,
+  Linkedin,
   Mail,
   MessagesSquare,
   Phone,
@@ -149,11 +150,44 @@ function useScrollReveal() {
 
 export default function App() {
   const [formStatus, setFormStatus] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
   useScrollReveal()
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setFormStatus("Recebido. Agora e so conectar esse formulario ao WhatsApp, email ou CRM de voces.")
+    setIsSubmitting(true)
+    setFormStatus("")
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    const senderEmail = String(formData.get("Email") || "")
+
+    formData.set("_subject", "Novo lead pelo site Trinca.dev")
+    formData.set("_template", "box")
+    formData.set("_captcha", "false")
+    formData.set("_replyto", senderEmail)
+    formData.set("Origem", "Formulario de contato do site Trinca.dev")
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/trincadev1@gmail.com", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        body: formData,
+      })
+
+      if (!response.ok) {
+        throw new Error("Falha no envio")
+      }
+
+      form.reset()
+      setFormStatus("Mensagem enviada. Vamos responder pelo email informado.")
+    } catch {
+      setFormStatus("Nao foi possivel enviar agora. Tente novamente ou chame pelo Instagram.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -382,41 +416,57 @@ export default function App() {
               </p>
 
               <div className="mt-10 space-y-4">
-                <a className="contact-link" href="mailto:contato@trinca.dev">
+                <a className="contact-link" href="mailto:trincadev1@gmail.com">
                   <Mail className="h-5 w-5" />
-                  contato@trinca.dev
+                  trincadev1@gmail.com
                 </a>
                 <a className="contact-link" href="https://wa.me/" target="_blank" rel="noreferrer">
                   <Phone className="h-5 w-5" />
                   WhatsApp
                 </a>
-                <a className="contact-link" href="https://instagram.com/" target="_blank" rel="noreferrer">
+                <a className="contact-link" href="https://www.instagram.com/trincadev1/" target="_blank" rel="noreferrer">
                   <Instagram className="h-5 w-5" />
                   Instagram
+                </a>
+                <a
+                  className="contact-link"
+                  href="https://www.linkedin.com/in/trinca-dev-12aaa8421/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Linkedin className="h-5 w-5" />
+                  LinkedIn
                 </a>
               </div>
             </div>
 
             <form
               className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_80px_rgba(2,6,23,0.28)] md:p-8"
+              action="https://formsubmit.co/trincadev1@gmail.com"
+              method="POST"
               onSubmit={handleSubmit}
               data-reveal
               style={revealStyle(1)}
             >
+              <input type="hidden" name="_subject" value="Novo lead pelo site Trinca.dev" />
+              <input type="hidden" name="_template" value="box" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="Origem" value="Formulario de contato do site Trinca.dev" />
+
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="field">
                   Nome
-                  <input required name="name" placeholder="Seu nome" />
+                  <input required name="Nome" placeholder="Seu nome" autoComplete="name" />
                 </label>
                 <label className="field">
                   Email
-                  <input required type="email" name="email" placeholder="voce@email.com" />
+                  <input required type="email" name="Email" placeholder="voce@email.com" autoComplete="email" />
                 </label>
               </div>
 
               <label className="field mt-4">
                 Tipo de projeto
-                <select name="project">
+                <select name="Tipo de projeto">
                   <option>Landing page</option>
                   <option>Site institucional</option>
                   <option>Software sob demanda</option>
@@ -427,11 +477,14 @@ export default function App() {
 
               <label className="field mt-4">
                 Mensagem
-                <textarea required name="message" rows={5} placeholder="Conta um pouco do projeto..." />
+                <textarea required name="Mensagem" rows={5} placeholder="Conta um pouco do projeto..." />
               </label>
 
-              <button className="mt-6 inline-flex h-14 w-full items-center justify-center gap-3 rounded-lg bg-primary px-7 text-base font-bold text-primary-foreground transition hover:bg-primary/90">
-                Enviar mensagem
+              <button
+                className="mt-6 inline-flex h-14 w-full items-center justify-center gap-3 rounded-lg bg-primary px-7 text-base font-bold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Enviando..." : "Enviar mensagem"}
                 <Zap className="h-5 w-5" />
               </button>
 
