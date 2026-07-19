@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react"
+import { ArrowDown, ArrowRight, CheckCircle2 } from "lucide-react"
 import { Suspense, lazy, useState, type ReactNode } from "react"
 
 const Dithering = lazy(() =>
@@ -6,94 +6,88 @@ const Dithering = lazy(() =>
 )
 
 type CTASectionProps = {
-  eyebrow?: string
   title?: ReactNode
   description?: string
   buttonLabel?: string
   buttonHref?: string
-  asHero?: boolean
-  className?: string
+  secondaryLabel?: string
+  secondaryHref?: string
 }
 
+const assurances = [
+  "Projeto sob medida",
+  "Comunicação direta",
+  "Publicação acompanhada",
+]
+
 export function CTASection({
-  eyebrow = "Sprint aberto para novos projetos",
-  title = (
-    <>
-      Vamos tirar seu projeto do rascunho.{" "}
-      <span className="text-foreground/72">Com visual, codigo e entrega.</span>
-    </>
-  ),
-  description = "Criamos software, sites, landing pages e automacoes com uma equipe enxuta, processo claro e foco no que faz o negocio andar.",
-  buttonLabel = "Pedir orcamento",
+  title = <>Tecnologia para sua empresa vender, operar e crescer.</>,
+  description = "Criamos experiências digitais e software sob medida para transformar objetivos de negócio em soluções prontas para evoluir.",
+  buttonLabel = "Solicitar um diagnóstico",
   buttonHref = "#contato",
-  asHero = false,
-  className = "",
+  secondaryLabel = "Conhecer as soluções",
+  secondaryHref = "#solucoes",
 }: CTASectionProps) {
   const [isHovered, setIsHovered] = useState(false)
-  const sectionClass = asHero ? "w-full px-0 py-0" : "w-full px-4 py-10 md:px-6 md:py-16"
-  const wrapperClass = asHero ? "relative mx-auto w-full max-w-none" : "relative mx-auto w-full max-w-7xl"
-  const panelClass = asHero
-    ? "relative flex min-h-screen flex-col items-center justify-center overflow-hidden border-b border-primary/20 bg-[#07111f] shadow-[0_30px_120px_rgba(14,165,233,0.14)] duration-500"
-    : "relative flex min-h-[560px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-primary/20 bg-[#07111f] shadow-[0_30px_120px_rgba(14,165,233,0.14)] duration-500 md:min-h-[670px]"
 
   return (
-    <section className={`${sectionClass} ${className}`}>
-      <div
-        className={wrapperClass}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className={panelClass}>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(37,99,235,0.34),transparent_34%),radial-gradient(circle_at_88%_10%,rgba(16,185,129,0.13),transparent_28%),linear-gradient(180deg,rgba(7,17,31,0.08),rgba(2,6,23,0.72))]" />
-          <Suspense fallback={<div className="absolute inset-0 bg-muted/20" />}>
-            <div className="pointer-events-none absolute inset-0 z-0 opacity-45 mix-blend-screen">
-              <Dithering
-                colorBack="#00000000"
-                colorFront="#38BDF8"
-                shape="warp"
-                type="4x4"
-                speed={isHovered ? 0.6 : 0.2}
-                className="size-full"
-                minPixelRatio={1}
-              />
-            </div>
-          </Suspense>
+    <section
+      className="relative flex min-h-[100svh] w-full flex-col overflow-hidden border-b border-white/[0.08] bg-black"
+      aria-labelledby="hero-title"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="absolute inset-0 bg-[linear-gradient(115deg,#000000_0%,#06080d_55%,#07111d_100%)]" />
+      <Suspense fallback={<div className="absolute inset-0 bg-black" />}>
+        <div className="pointer-events-none absolute inset-0 opacity-38 mix-blend-screen">
+          <Dithering
+            colorBack="#00000000"
+            colorFront="#0A84FF"
+            shape="warp"
+            type="4x4"
+            speed={isHovered ? 0.5 : 0.16}
+            className="size-full"
+            minPixelRatio={1}
+          />
+        </div>
+      </Suspense>
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.98)_0%,rgba(0,0,0,0.82)_48%,rgba(0,0,0,0.38)_100%)]" />
+      <div className="hero-grid absolute inset-0 opacity-35" />
 
-          <div className="absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(2,6,23,0.68),rgba(2,6,23,0.22),rgba(2,6,23,0.68)),radial-gradient(circle_at_center,rgba(2,6,23,0.06),rgba(2,6,23,0.72)_74%)]" />
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 items-center px-5 pb-28 pt-32 md:px-8 md:pb-32 md:pt-36">
+        <div className="max-w-5xl">
+          <h1 id="hero-title" className="max-w-5xl text-4xl font-semibold leading-[1.06] text-white sm:text-5xl md:text-6xl lg:text-7xl">
+            {title}
+          </h1>
 
-          <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-5 text-center sm:px-8">
-            {eyebrow && (
-              <div className="mb-8 inline-flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary backdrop-blur-sm">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
-                </span>
-                {eyebrow}
-              </div>
-            )}
+          <p className="mt-7 max-w-3xl text-base leading-7 text-[#b6c2d3] sm:text-lg md:text-xl md:leading-8">
+            {description}
+          </p>
 
-            {asHero ? (
-              <h1 className="mb-8 max-w-5xl text-4xl font-semibold leading-[1.02] tracking-tight text-foreground sm:text-5xl md:text-7xl lg:text-8xl">
-                {title}
-              </h1>
-            ) : (
-              <h2 className="mb-8 max-w-5xl text-4xl font-semibold leading-[1.02] tracking-tight text-foreground sm:text-5xl md:text-7xl lg:text-8xl">
-                {title}
-              </h2>
-            )}
-
-            <p className="mb-12 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl">
-              {description}
-            </p>
-
-            <a
-              href={buttonHref}
-              className="group relative inline-flex h-14 items-center justify-center gap-3 overflow-hidden rounded-lg bg-primary px-10 text-base font-semibold text-primary-foreground transition-all duration-300 hover:scale-[1.02] hover:bg-primary/90 hover:ring-4 hover:ring-primary/20 active:scale-95 sm:px-12"
-            >
-              <span className="relative z-10">{buttonLabel}</span>
-              <ArrowRight className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href={buttonHref} className="primary-button">
+              {buttonLabel}<ArrowRight className="h-5 w-5" />
+            </a>
+            <a href={secondaryHref} className="secondary-button">
+              {secondaryLabel}<ArrowDown className="h-5 w-5" />
             </a>
           </div>
+
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-7">
+            {assurances.map((item) => (
+              <span className="flex items-center gap-2 text-sm text-[#c8d2df]" key={item}>
+                <CheckCircle2 className="h-4 w-4 text-accent" />{item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="relative z-10 border-t border-white/[0.08] bg-black/60 px-5 py-4 backdrop-blur-xl md:px-8">
+        <div className="mx-auto grid max-w-7xl place-items-center gap-4 text-center text-sm text-muted-foreground sm:grid-cols-3 sm:gap-0">
+          <p className="w-full sm:border-r sm:border-white/10 sm:px-8"><strong className="text-white">Para vender:</strong> sites e landing pages</p>
+          <p className="w-full sm:border-r sm:border-white/10 sm:px-8"><strong className="text-white">Para operar:</strong> sistemas e automações</p>
+          <p className="w-full sm:px-8"><strong className="text-white">Para decidir:</strong> dashboards e integrações</p>
         </div>
       </div>
     </section>

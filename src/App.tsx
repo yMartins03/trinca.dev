@@ -1,134 +1,184 @@
 import {
+  ArrowRight,
   BadgeCheck,
   BarChart3,
+  Check,
+  ChevronDown,
   Code2,
+  Gauge,
+  Globe2,
   Instagram,
-  LayoutTemplate,
+  Layers3,
   Linkedin,
   Mail,
-  MessagesSquare,
+  MessageCircleMore,
   Phone,
-  Rocket,
   ShieldCheck,
-  Workflow,
+  Sparkles,
   Zap,
   type LucideIcon,
 } from "lucide-react"
-import { useEffect, useState, type CSSProperties, type FormEvent } from "react"
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent, type KeyboardEvent } from "react"
 
 import { CTASection } from "../components/ui/hero-dithering-card"
 
-type Service = {
+type Solution = {
   icon: LucideIcon
+  label: string
   title: string
   description: string
+  items: string[]
+  idealFor: string
 }
 
-type CaseItem = {
-  name: string
-  type: string
-  description: string
-  metrics: string
-}
-
-const services: Service[] = [
+const solutions: Solution[] = [
+  {
+    icon: Globe2,
+    label: "Presença e aquisição",
+    title: "Sites e landing pages",
+    description:
+      "Transformamos sua oferta em uma experiência digital clara, rápida e preparada para gerar oportunidades.",
+    items: [
+      "Estratégia de página e arquitetura de conteúdo",
+      "Design responsivo alinhado à sua marca",
+      "Formulários, integrações e publicação",
+    ],
+    idealFor: "Empresas que precisam apresentar melhor, lançar ou vender online.",
+  },
   {
     icon: Code2,
-    title: "Software sob demanda",
-    description: "Sistemas web e mobile desenhados para fluxos reais, com arquitetura preparada para crescer.",
-  },
-  {
-    icon: LayoutTemplate,
-    title: "Sites institucionais",
-    description: "Presenca digital clara, responsiva e organizada para gerar confianca em decisoes B2B.",
-  },
-  {
-    icon: Rocket,
-    title: "Landing pages",
-    description: "Paginas de campanha com hierarquia visual, velocidade e CTAs pensados para conversao.",
-  },
-  {
-    icon: Workflow,
-    title: "Automacoes e integracoes",
-    description: "Conectamos sistemas, APIs e rotinas para reduzir friccao operacional e retrabalho.",
+    label: "Operação e escala",
+    title: "Software sob medida",
+    description:
+      "Transformamos processos manuais que consomem horas em fluxos digitais que podem rodar em minutos, seguindo as regras reais da sua operação.",
+    items: [
+      "Sistemas web e portais personalizados",
+      "Automação de tarefas repetitivas e integrações via API",
+      "Arquitetura preparada para evoluir",
+    ],
+    idealFor: "Operações que perdem horas com planilhas, retrabalho ou ferramentas desconectadas.",
   },
   {
     icon: BarChart3,
-    title: "Dashboards",
-    description: "Paineis executivos e operacionais para acompanhar indicadores com leitura rapida.",
+    label: "Dados e evolução",
+    title: "Dashboards e melhorias",
+    description:
+      "Organizamos indicadores e evoluímos produtos existentes para que a tecnologia continue servindo às decisões do negócio.",
+    items: [
+      "Painéis operacionais e executivos",
+      "Evolução de interfaces e funcionalidades",
+      "Performance, manutenção e suporte técnico",
+    ],
+    idealFor: "Times que precisam enxergar melhor os dados ou destravar um produto.",
+  },
+]
+
+const benefits = [
+  {
+    icon: Layers3,
+    title: "Visão de produto",
+    text: "Não recebemos apenas uma lista de telas. Entendemos o objetivo para construir o que realmente precisa existir.",
+  },
+  {
+    icon: MessageCircleMore,
+    title: "Comunicação direta",
+    text: "Você acompanha decisões, prioridades e andamento sem camadas desnecessárias entre negócio e desenvolvimento.",
+  },
+  {
+    icon: Gauge,
+    title: "Qualidade técnica",
+    text: "Responsividade, performance, segurança e manutenção entram no projeto desde o começo.",
   },
   {
     icon: ShieldCheck,
-    title: "Evolucao tecnica",
-    description: "Refino, manutencao e evolucao de produtos existentes com criterio e estabilidade.",
+    title: "Entrega responsável",
+    text: "Publicação, validações finais e orientação para os próximos passos fazem parte da entrega.",
   },
 ]
 
 const processSteps = [
   {
-    title: "Briefing direto",
-    text: "Mapeamos objetivo, publico, restricoes tecnicas e o que precisa estar pronto primeiro.",
+    title: "Entendimento",
+    text: "Alinhamos o cenário, o objetivo comercial e o que hoje impede o projeto de avançar.",
   },
   {
-    title: "Proposta clara",
-    text: "Definimos escopo, prazo, investimento e prioridades com linguagem objetiva.",
+    title: "Direcionamento",
+    text: "Você recebe uma proposta com solução recomendada, escopo, etapas, prazo e investimento.",
   },
   {
-    title: "Desenvolvimento",
-    text: "Construimos em ciclos curtos, com checkpoints para validar UX, conteudo e integracoes.",
+    title: "Construção",
+    text: "Desenvolvemos em ciclos curtos e mostramos o progresso nos pontos importantes de decisão.",
   },
   {
-    title: "Entrega e evolucao",
-    text: "Publicamos, ajustamos os detalhes finais e deixamos base pronta para evolucao.",
+    title: "Publicação",
+    text: "Validamos a entrega, colocamos no ar e deixamos o caminho preparado para a evolução.",
   },
 ]
 
-const cases: CaseItem[] = [
+const faqs = [
   {
-    name: "Portal comercial B2B",
-    type: "Site institucional",
-    description: "Arquitetura de conteudo, paginas de servicos e formulario orientado a oportunidades.",
-    metrics: "SEO + performance",
+    question: "Quanto custa desenvolver um projeto?",
+    answer:
+      "O investimento depende do objetivo, da complexidade e das integrações envolvidas. Depois da conversa inicial, enviamos uma proposta com escopo e valores claros para você decidir com segurança.",
   },
   {
-    name: "Painel operacional",
-    type: "Dashboard",
-    description: "Interface para acompanhar indicadores, status de atendimento e gargalos da operacao.",
-    metrics: "Dados em tempo real",
+    question: "Em quanto tempo o projeto fica pronto?",
+    answer:
+      "Landing pages costumam ter um ciclo menor; sistemas e integrações exigem mais etapas. O cronograma é definido antes do início e organizado por entregas para dar visibilidade ao progresso.",
   },
   {
-    name: "Campanha de lancamento",
-    type: "Landing page",
-    description: "Pagina escura, direta e otimizada para captar leads de um novo produto digital.",
-    metrics: "Foco em conversao",
+    question: "Vocês trabalham com projetos que ainda estão só na ideia?",
+    answer:
+      "Sim. Ajudamos a transformar a ideia em uma primeira versão viável, priorizando o que precisa ser validado antes de ampliar o investimento.",
+  },
+  {
+    question: "É possível integrar com ferramentas que já usamos?",
+    answer:
+      "Na maioria dos casos, sim. Avaliamos APIs, regras de negócio e limitações técnicas durante o diagnóstico para recomendar o caminho mais seguro.",
+  },
+  {
+    question: "Existe suporte depois da publicação?",
+    answer:
+      "Sim. Podemos combinar manutenção, melhorias e novas etapas conforme a necessidade do produto e da operação.",
   },
 ]
 
-const testimonials = [
-  {
-    quote:
-      "O processo foi muito mais direto do que estavamos acostumados. A cada reuniao ja tinha alguma coisa real para validar.",
-    author: "Cliente em tecnologia",
-  },
-  {
-    quote:
-      "Conseguiram transformar uma ideia solta em uma pagina profissional, rapida e facil de manter.",
-    author: "Empreendedor local",
-  },
-  {
-    quote:
-      "A comunicacao fez diferenca. A gente sabia o que estava sendo feito, por que e quando seria entregue.",
-    author: "Operacao de servicos",
-  },
+const projectOptions = [
+  "Landing page",
+  "Site institucional",
+  "Software sob medida",
+  "Automação ou integração",
+  "Dashboard",
+  "Melhoria em produto existente",
+  "Ainda não sei",
+]
+
+const deadlineOptions = [
+  "O quanto antes",
+  "Nos próximos 30 dias",
+  "Entre 1 e 3 meses",
+  "Estou pesquisando",
+]
+
+const investmentOptions = [
+  "Ainda não defini",
+  "Até R$ 5 mil",
+  "De R$ 5 mil a R$ 15 mil",
+  "Acima de R$ 15 mil",
 ]
 
 const revealStyle = (index = 0): CSSProperties => ({
-  transitionDelay: `${index * 90}ms`,
+  transitionDelay: `${index * 80}ms`,
 })
 
 function useScrollReveal() {
   useEffect(() => {
     const elements = document.querySelectorAll<HTMLElement>("[data-reveal]")
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      elements.forEach((element) => element.classList.add("is-visible"))
+      return
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -139,13 +189,95 @@ function useScrollReveal() {
           }
         })
       },
-      { rootMargin: "0px 0px -80px 0px", threshold: 0.15 }
+      { rootMargin: "0px 0px -64px 0px", threshold: 0.12 }
     )
 
     elements.forEach((element) => observer.observe(element))
-
     return () => observer.disconnect()
   }, [])
+}
+
+type SelectFieldProps = {
+  label: string
+  name: string
+  options: string[]
+}
+
+function SelectField({ label, name, options }: SelectFieldProps) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [value, setValue] = useState("")
+  const rootRef = useRef<HTMLDivElement>(null)
+  const fieldId = `select-${name.toLowerCase().replace(/\s+/g, "-")}`
+
+  useEffect(() => {
+    function handlePointerDown(event: PointerEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) setIsOpen(false)
+    }
+
+    function handleFormReset() {
+      setValue("")
+      setIsOpen(false)
+    }
+
+    const form = rootRef.current?.closest("form")
+
+    document.addEventListener("pointerdown", handlePointerDown)
+    form?.addEventListener("reset", handleFormReset)
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown)
+      form?.removeEventListener("reset", handleFormReset)
+    }
+  }, [])
+
+  function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    if (event.key === "Escape") setIsOpen(false)
+    if ((event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") && !isOpen) {
+      event.preventDefault()
+      setIsOpen(true)
+    }
+  }
+
+  return (
+    <div className="field custom-select" ref={rootRef}>
+      <span id={`${fieldId}-label`}>{label}</span>
+      <input type="hidden" name={name} value={value} />
+      <button
+        type="button"
+        className={`select-trigger ${isOpen ? "is-open" : ""}`}
+        aria-labelledby={`${fieldId}-label ${fieldId}-value`}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen((current) => !current)}
+        onKeyDown={handleKeyDown}
+      >
+        <span id={`${fieldId}-value`} className={value ? "text-white" : "text-[#7f8da1]"}>
+          {value || "Selecione"}
+        </span>
+        <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform duration-200" />
+      </button>
+
+      {isOpen && (
+        <div className="select-menu" role="listbox" aria-labelledby={`${fieldId}-label`}>
+          {options.map((option) => (
+            <button
+              type="button"
+              className="select-option"
+              role="option"
+              aria-selected={value === option}
+              key={option}
+              onClick={() => {
+                setValue(option)
+                setIsOpen(false)
+              }}
+            >
+              <span>{option}</span>
+              {value === option && <Check className="h-4 w-4 text-primary" />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default function App() {
@@ -162,29 +294,25 @@ export default function App() {
     const formData = new FormData(form)
     const senderEmail = String(formData.get("Email") || "")
 
-    formData.set("_subject", "Novo lead pelo site Trinca.dev")
+    formData.set("_subject", "Novo pedido de projeto pelo site Trivium")
     formData.set("_template", "box")
     formData.set("_captcha", "false")
     formData.set("_replyto", senderEmail)
-    formData.set("Origem", "Formulario de contato do site Trinca.dev")
+    formData.set("Origem", "Formulário comercial do site Trivium")
 
     try {
       const response = await fetch("https://formsubmit.co/ajax/trincadev1@gmail.com", {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
+        headers: { Accept: "application/json" },
         body: formData,
       })
 
-      if (!response.ok) {
-        throw new Error("Falha no envio")
-      }
+      if (!response.ok) throw new Error("Falha no envio")
 
       form.reset()
-      setFormStatus("Mensagem enviada. Vamos responder pelo email informado.")
+      setFormStatus("Mensagem enviada. Vamos responder pelo e-mail informado.")
     } catch {
-      setFormStatus("Nao foi possivel enviar agora. Tente novamente ou chame pelo Instagram.")
+      setFormStatus("Não foi possível enviar agora. Tente novamente ou fale com a gente pelo Instagram.")
     } finally {
       setIsSubmitting(false)
     }
@@ -192,108 +320,85 @@ export default function App() {
 
   return (
     <div className="min-h-screen overflow-hidden bg-background text-foreground">
-      <header className="fixed inset-x-0 top-3 z-50 px-4 md:top-4 md:px-6">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-lg border border-primary/20 bg-primary/10 px-4 py-3 text-primary shadow-[0_0_45px_rgba(56,189,248,0.14)] backdrop-blur-xl md:px-5">
-          <a href="#topo" className="flex items-center gap-3" aria-label="Ir para o topo">
-            <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/20 bg-white p-1.5 shadow-[0_0_35px_rgba(56,189,248,0.18)]">
-              <img src="/trinca-logo.png" alt="" className="h-full w-full object-contain" aria-hidden="true" />
+      <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-4">
+        <nav
+          className="mx-auto flex h-16 max-w-7xl items-center justify-between rounded-full border border-white/10 bg-black/65 px-3 shadow-[0_18px_60px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:px-5"
+          aria-label="Navegação principal"
+        >
+          <a href="#topo" className="flex min-w-0 items-center gap-2.5" aria-label="Trivium - ir para o topo">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center">
+              <img src="/trivium-symbol.png" alt="" className="h-full w-full object-contain" aria-hidden="true" />
             </span>
-            <span className="text-lg font-semibold tracking-tight">Trinca.dev</span>
+            <span className="truncate text-lg font-semibold text-white">Trivium</span>
           </a>
 
-          <div className="hidden items-center gap-8 text-sm text-primary/80 md:flex">
-            <a className="transition hover:text-primary" href="#servicos">
-              Servicos
-            </a>
-            <a className="transition hover:text-primary" href="#processo">
-              Processo
-            </a>
-            <a className="transition hover:text-primary" href="#cases">
-              Cases
-            </a>
-            <a className="transition hover:text-primary" href="#contato">
-              Contato
-            </a>
+          <div className="hidden items-center gap-7 text-sm font-medium text-muted-foreground lg:flex">
+            <a className="nav-link" href="#solucoes">Soluções</a>
+            <a className="nav-link" href="#diferenciais">Diferenciais</a>
+            <a className="nav-link" href="#processo">Processo</a>
+            <a className="nav-link" href="#duvidas">Dúvidas</a>
           </div>
 
-          <a
-            href="#contato"
-            className="hidden rounded-lg border border-primary/30 bg-primary/10 px-5 py-2 text-sm font-semibold text-primary transition hover:bg-primary hover:text-primary-foreground sm:inline-flex"
-          >
-            Fale com a gente
+          <a href="#contato" className="header-cta">
+            <span className="hidden sm:inline">Solicitar proposta</span>
+            <span className="sm:hidden">Orçamento</span>
+            <ArrowRight className="h-4 w-4" />
           </a>
         </nav>
       </header>
 
       <main id="topo">
-        <section className="relative min-h-screen px-0">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.12),transparent_28%),radial-gradient(circle_at_18%_12%,rgba(37,99,235,0.22),transparent_30%),linear-gradient(180deg,#020617_0%,#07111f_62%,#020617_100%)]" />
-          <CTASection
-            asHero
-            className="py-0"
-            eyebrow=""
-            title="Produtos, sites e landing pages com padrao tecnico de software."
-            description="Criamos experiencias digitais para empresas que precisam vender melhor, organizar processos ou validar uma ideia com clareza, seguranca e desenvolvimento bem estruturado."
-            buttonLabel="Comecar conversa"
-            buttonHref="#contato"
-          />
-        </section>
+        <CTASection
+          title={
+            <>
+              Tecnologia para sua empresa <span className="text-primary">vender, operar e crescer.</span>
+            </>
+          }
+          description="Criamos sites, landing pages, sistemas e automações sob medida para transformar objetivos de negócio em soluções digitais claras, rápidas e prontas para evoluir."
+          buttonLabel="Solicitar um diagnóstico"
+          buttonHref="#contato"
+          secondaryLabel="Conhecer as soluções"
+          secondaryHref="#solucoes"
+        />
 
-        <section id="sobre" className="px-4 py-20 md:px-6">
-          <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-            <div data-reveal>
-              <p className="section-kicker">Sobre o estudio</p>
-              <h2 className="section-title">Time enxuto, criterio tecnico e processo de produto.</h2>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-3">
-              {[
-                ["Arquitetura full-stack", "Produto, backend, front-end e integracoes com foco em estabilidade."],
-                ["UX e interface", "Interfaces responsivas, consistentes e coerentes com marcas de tecnologia."],
-                ["Entrega orientada", "Priorizacao, comunicacao e publicacao com visibilidade do progresso."],
-              ].map(([title, text], index) => (
-                <article
-                  key={title}
-                  className="rounded-lg border border-white/10 bg-white/[0.035] p-6 shadow-[0_20px_70px_rgba(2,6,23,0.18)]"
-                  data-reveal
-                  style={revealStyle(index)}
-                >
-                  <BadgeCheck className="mb-8 h-7 w-7 text-primary" />
-                  <h3 className="text-lg font-semibold text-white">{title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="servicos" className="px-4 py-20 md:px-6">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 max-w-3xl" data-reveal>
-              <p className="section-kicker">Servicos</p>
-              <h2 className="section-title">Do posicionamento digital ao sistema que sustenta a operacao.</h2>
+        <section id="solucoes" className="section-band scroll-mt-24">
+          <div className="section-container">
+            <div className="section-heading" data-reveal>
+              <p className="section-kicker">Soluções orientadas ao negócio</p>
+              <h2 className="section-title">O projeto certo para o momento da sua empresa.</h2>
               <p className="section-copy">
-                Escolhemos a tecnologia pelo problema, nao por moda. A entrega precisa transmitir confianca,
-                performar bem e estar pronta para o proximo passo do negocio.
+                Da primeira presença digital ao sistema que sustenta a operação, cada entrega começa pelo problema que precisa ser resolvido.
               </p>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {services.map((service, index) => {
-                const Icon = service.icon
+            <div className="mt-12 grid gap-5 lg:grid-cols-3">
+              {solutions.map((solution, index) => {
+                const Icon = solution.icon
 
                 return (
-                  <article
-                    key={service.title}
-                    className="group rounded-lg border border-white/10 bg-white/[0.035] p-6 transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:bg-primary/[0.06]"
-                    data-reveal
-                    style={revealStyle(index)}
-                  >
-                    <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary">
-                      <Icon className="h-6 w-6" />
+                  <article className="solution-card" key={solution.title} data-reveal style={revealStyle(index)}>
+                    <div className="solution-icon"><Icon className="h-6 w-6" /></div>
+                    <p className="solution-label">{solution.label}</p>
+                    <h3 className="mt-3 text-2xl font-semibold text-white">{solution.title}</h3>
+                    <p className="mt-4 text-sm leading-6 text-muted-foreground">{solution.description}</p>
+
+                    <ul className="mt-7 space-y-3" aria-label={`O que inclui ${solution.title}`}>
+                      {solution.items.map((item) => (
+                        <li className="flex gap-3 text-sm leading-6 text-foreground/90" key={item}>
+                          <Check className="mt-1 h-4 w-4 shrink-0 text-accent" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-8 border-t border-white/10 pt-5">
+                      <p className="text-xs font-semibold uppercase text-muted-foreground">Indicado para</p>
+                      <p className="mt-2 text-sm leading-6 text-white/90">{solution.idealFor}</p>
                     </div>
-                    <h3 className="text-xl font-semibold text-white">{service.title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">{service.description}</p>
+
+                    <a href="#contato" className="solution-link">
+                      Conversar sobre esta solução <ArrowRight className="h-4 w-4" />
+                    </a>
                   </article>
                 )
               })}
@@ -301,198 +406,215 @@ export default function App() {
           </div>
         </section>
 
-        <section id="processo" className="px-4 py-20 md:px-6">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end" data-reveal>
-              <div>
-                <p className="section-kicker">Como funciona</p>
-                <h2 className="section-title">Fluxo claro, checkpoints curtos e decisao sem ruido.</h2>
-              </div>
-              <p className="max-w-xl text-base leading-7 text-muted-foreground">
-                O objetivo e diminuir risco: alinhar antes, construir com evidencias e entregar com criterio.
-              </p>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-4">
-              {processSteps.map((step, index) => (
-                <article
-                  key={step.title}
-                  className="relative rounded-lg border border-white/10 bg-[#07111f] p-6"
-                  data-reveal
-                  style={revealStyle(index)}
-                >
-                  <span className="mb-10 flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-sm font-black text-primary-foreground">
-                    {index + 1}
-                  </span>
-                  <h3 className="text-lg font-semibold text-white">{step.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{step.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="cases" className="px-4 py-20 md:px-6">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 max-w-3xl" data-reveal>
-              <p className="section-kicker">Cases e entregas</p>
-              <h2 className="section-title">Entregas com cara de produto, nao de template.</h2>
-              <p className="section-copy">
-                Estrutura comercial preparada para apresentar projetos reais, resultados e imagens
-                quando voces quiserem publicar o portfolio oficial.
-              </p>
-            </div>
-
-            <div className="grid gap-5 lg:grid-cols-3">
-              {cases.map((item, index) => (
-                <article
-                  key={item.name}
-                  className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.035]"
-                  data-reveal
-                  style={revealStyle(index)}
-                >
-                  <div className="case-preview">
-                    <div className="case-window">
-                      <span />
-                      <span />
-                      <span />
-                    </div>
-                    <div className="case-lines">
-                      <i />
-                      <i />
-                      <i />
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="mb-4 flex items-center justify-between gap-4">
-                      <span className="rounded-md bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-                        {item.type}
-                      </span>
-                      <span className="text-xs text-muted-foreground">{item.metrics}</span>
-                    </div>
-                    <h3 className="text-xl font-semibold text-white">{item.name}</h3>
-                    <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.description}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="px-4 py-20 md:px-6">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-12 max-w-3xl" data-reveal>
-              <p className="section-kicker">Depoimentos</p>
-              <h2 className="section-title">Espaco pronto para prova social de verdade.</h2>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-3">
-              {testimonials.map((testimonial, index) => (
-                <figure
-                  key={testimonial.author}
-                  className="rounded-lg border border-white/10 bg-white/[0.035] p-6"
-                  data-reveal
-                  style={revealStyle(index)}
-                >
-                  <MessagesSquare className="mb-8 h-6 w-6 text-primary" />
-                  <blockquote className="text-base leading-7 text-white">"{testimonial.quote}"</blockquote>
-                  <figcaption className="mt-6 text-sm font-medium text-muted-foreground">
-                    {testimonial.author}
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="contato" className="px-4 pb-24 pt-10 md:px-6">
-          <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+        <section className="commercial-cta">
+          <div className="section-container flex flex-col justify-between gap-7 py-10 md:flex-row md:items-center">
             <div data-reveal>
-              <p className="section-kicker">Contato</p>
-              <h2 className="section-title">Conte o que voce quer construir ou melhorar.</h2>
+              <p className="text-sm font-semibold text-accent">Não sabe qual caminho faz mais sentido?</p>
+              <h2 className="mt-2 max-w-2xl text-2xl font-semibold text-white md:text-3xl">
+                Conte o cenário. A gente ajuda a organizar o próximo passo.
+              </h2>
+            </div>
+            <a href="#contato" className="primary-button shrink-0" data-reveal style={revealStyle(1)}>
+              Falar sobre o projeto <ArrowRight className="h-5 w-5" />
+            </a>
+          </div>
+        </section>
+
+        <section id="diferenciais" className="section-band section-band-alt scroll-mt-24">
+          <div className="section-container grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
+            <div data-reveal>
+              <p className="section-kicker">Por que a Trivium</p>
+              <h2 className="section-title">Uma parceria técnica com visão comercial.</h2>
               <p className="section-copy">
-                Manda a ideia, o prazo e o tipo de projeto. A resposta vem com caminho sugerido,
-                escopo inicial e proximos passos.
+                Bonito não basta. A solução precisa comunicar valor, funcionar bem e continuar simples de evoluir depois da publicação.
+              </p>
+              <div className="mt-8 flex items-center gap-3 text-sm text-foreground/90">
+                <BadgeCheck className="h-5 w-5 text-accent" />
+                Escopo transparente e decisões compartilhadas
+              </div>
+            </div>
+
+            <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2">
+              {benefits.map((benefit, index) => {
+                const Icon = benefit.icon
+                return (
+                  <article className="benefit-item" key={benefit.title} data-reveal style={revealStyle(index)}>
+                    <Icon className="h-6 w-6 text-primary" />
+                    <h3 className="mt-5 text-lg font-semibold text-white">{benefit.title}</h3>
+                    <p className="mt-3 text-sm leading-6 text-muted-foreground">{benefit.text}</p>
+                  </article>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section id="processo" className="section-band scroll-mt-24">
+          <div className="section-container">
+            <div className="section-heading" data-reveal>
+              <p className="section-kicker">Do primeiro contato à publicação</p>
+              <h2 className="section-title">Um processo simples para tirar o projeto do papel.</h2>
+              <p className="section-copy">
+                Cada etapa reduz incertezas e deixa claro o que está sendo decidido, construído e entregue.
+              </p>
+            </div>
+
+            <ol className="process-grid mt-12">
+              {processSteps.map((step, index) => (
+                <li className="process-step" key={step.title} data-reveal style={revealStyle(index)}>
+                  <span className="process-number">0{index + 1}</span>
+                  <h3 className="mt-6 text-xl font-semibold text-white">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{step.text}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        <section id="duvidas" className="section-band section-band-alt scroll-mt-24">
+          <div className="section-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+            <div data-reveal>
+              <p className="section-kicker">Perguntas frequentes</p>
+              <h2 className="section-title">O que você precisa saber antes de começar.</h2>
+              <p className="section-copy">Se a sua dúvida não estiver aqui, pode mandar direto no formulário.</p>
+            </div>
+
+            <div className="divide-y divide-white/10 border-y border-white/10" data-reveal style={revealStyle(1)}>
+              {faqs.map((faq) => (
+                <details className="faq-item group" key={faq.question}>
+                  <summary>
+                    <span>{faq.question}</span>
+                    <span className="faq-control" aria-hidden="true">
+                      <ChevronDown className="h-4 w-4" />
+                    </span>
+                  </summary>
+                  <p>{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="contato" className="contact-section scroll-mt-20">
+          <div className="section-container grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
+            <div data-reveal>
+              <p className="section-kicker">Vamos conversar</p>
+              <h2 className="section-title">Qual resultado a tecnologia precisa gerar para você?</h2>
+              <p className="section-copy">
+                Compartilhe o momento da empresa e o que você quer construir ou melhorar. A conversa inicial é objetiva e sem compromisso.
               </p>
 
-              <div className="mt-10 space-y-4">
-                <a className="contact-link" href="mailto:trincadev1@gmail.com">
+              <div className="mt-9 space-y-4">
+                {[
+                  "Entendimento do cenário atual",
+                  "Direcionamento da solução mais adequada",
+                  "Próximos passos claros para o projeto",
+                ].map((item) => (
+                  <div className="flex items-center gap-3 text-sm text-foreground/90" key={item}>
+                    <Check className="h-4 w-4 text-accent" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-10 space-y-5">
+                <a className="contact-channel" href="mailto:trincadev1@gmail.com">
                   <Mail className="h-5 w-5" />
-                  trincadev1@gmail.com
-                </a>
-                <a className="contact-link" href="https://wa.me/" target="_blank" rel="noreferrer">
-                  <Phone className="h-5 w-5" />
-                  WhatsApp
-                </a>
-                <a className="contact-link" href="https://www.instagram.com/trincadev1/" target="_blank" rel="noreferrer">
-                  <Instagram className="h-5 w-5" />
-                  Instagram
+                  <span>
+                    <small>Prefere enviar um e-mail?</small>
+                    trincadev1@gmail.com
+                  </span>
                 </a>
                 <a
-                  className="contact-link"
-                  href="https://www.linkedin.com/in/trinca-dev-12aaa8421/"
+                  className="contact-channel"
+                  href="https://wa.me/5553981268866"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Linkedin className="h-5 w-5" />
-                  LinkedIn
+                  <Phone className="h-5 w-5" />
+                  <span>
+                    <small>Prefere chamar no WhatsApp?</small>
+                    (53) 98126-8866
+                  </span>
                 </a>
               </div>
             </div>
 
             <form
-              className="rounded-lg border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_80px_rgba(2,6,23,0.28)] md:p-8"
+              className="contact-form"
               action="https://formsubmit.co/trincadev1@gmail.com"
               method="POST"
               onSubmit={handleSubmit}
               data-reveal
               style={revealStyle(1)}
             >
-              <input type="hidden" name="_subject" value="Novo lead pelo site Trinca.dev" />
-              <input type="hidden" name="_template" value="box" />
-              <input type="hidden" name="_captcha" value="false" />
-              <input type="hidden" name="Origem" value="Formulario de contato do site Trinca.dev" />
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="field">
-                  Nome
-                  <input required name="Nome" placeholder="Seu nome" autoComplete="name" />
-                </label>
-                <label className="field">
-                  Email
-                  <input required type="email" name="Email" placeholder="voce@email.com" autoComplete="email" />
-                </label>
+              <div className="mb-7">
+                <p className="text-sm font-semibold text-primary">Conte sobre o seu projeto</p>
+                <h3 className="mt-2 text-2xl font-semibold text-white">Receba um direcionamento inicial.</h3>
               </div>
 
-              <label className="field mt-4">
-                Tipo de projeto
-                <select name="Tipo de projeto">
-                  <option>Landing page</option>
-                  <option>Site institucional</option>
-                  <option>Software sob demanda</option>
-                  <option>Automacao / integracao</option>
-                  <option>Dashboard</option>
-                </select>
+              <input type="hidden" name="_subject" value="Novo pedido de projeto pelo site Trivium" />
+              <input type="hidden" name="_template" value="box" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="Origem" value="Formulário comercial do site Trivium" />
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="field">Nome<input required name="Nome" placeholder="Seu nome" autoComplete="name" /></label>
+                <label className="field">E-mail<input required type="email" name="Email" placeholder="voce@empresa.com" autoComplete="email" /></label>
+              </div>
+
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                <label className="field">Empresa<input name="Empresa" placeholder="Nome da empresa" autoComplete="organization" /></label>
+                <SelectField label="Tipo de projeto" name="Tipo de projeto" options={projectOptions} />
+              </div>
+
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                <SelectField label="Prazo desejado" name="Prazo" options={deadlineOptions} />
+                <SelectField label="Investimento previsto" name="Investimento previsto" options={investmentOptions} />
+              </div>
+
+              <label className="field mt-4">Sobre o projeto
+                <textarea required name="Mensagem" rows={5} placeholder="O que você quer construir, melhorar ou automatizar?" />
               </label>
 
-              <label className="field mt-4">
-                Mensagem
-                <textarea required name="Mensagem" rows={5} placeholder="Conta um pouco do projeto..." />
-              </label>
-
-              <button
-                className="mt-6 inline-flex h-14 w-full items-center justify-center gap-3 rounded-lg bg-primary px-7 text-base font-bold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Enviando..." : "Enviar mensagem"}
-                <Zap className="h-5 w-5" />
+              <button className="primary-button mt-6 w-full" disabled={isSubmitting}>
+                {isSubmitting ? "Enviando..." : "Solicitar contato"}
+                {isSubmitting ? <Sparkles className="h-5 w-5 animate-pulse" /> : <Zap className="h-5 w-5" />}
               </button>
 
-              {formStatus && <p className="mt-4 text-sm text-primary">{formStatus}</p>}
+              <p className="mt-4 text-xs leading-5 text-muted-foreground">
+                Ao enviar, você autoriza o contato da Trivium sobre esta solicitação.
+              </p>
+              {formStatus && <p className="mt-4 text-sm font-medium text-primary" role="status" aria-live="polite">{formStatus}</p>}
             </form>
           </div>
         </section>
       </main>
+
+      <footer className="border-t border-white/[0.08] bg-black px-4 py-8 md:px-6">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <a href="#topo" className="flex items-center" aria-label="Trivium - voltar ao topo">
+            <img src="/trivium-logo.png" alt="Trivium Soluções Digitais" className="h-auto w-36 object-contain" />
+          </a>
+
+          <p className="text-sm text-muted-foreground">Software, sites e automações para negócios digitais.</p>
+
+          <div className="flex items-center gap-2">
+            <a className="social-link" href="https://wa.me/5553981268866" target="_blank" rel="noreferrer" aria-label="WhatsApp da Trivium">
+              <Phone className="h-5 w-5" />
+            </a>
+            <a className="social-link" href="https://www.instagram.com/triviumtech1/" target="_blank" rel="noreferrer" aria-label="Instagram da Trivium">
+              <Instagram className="h-5 w-5" />
+            </a>
+            <a className="social-link" href="https://www.linkedin.com/in/trivium-tech-12aaa8421/" target="_blank" rel="noreferrer" aria-label="LinkedIn da Trivium">
+              <Linkedin className="h-5 w-5" />
+            </a>
+            <a className="social-link" href="mailto:trincadev1@gmail.com" aria-label="Enviar e-mail para a Trivium">
+              <Mail className="h-5 w-5" />
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
