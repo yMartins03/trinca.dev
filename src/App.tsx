@@ -15,7 +15,6 @@ import {
   Phone,
   ShieldCheck,
   Sparkles,
-  Zap,
   type LucideIcon,
 } from "lucide-react"
 import { useEffect, useRef, useState, type CSSProperties, type FormEvent, type KeyboardEvent } from "react"
@@ -579,7 +578,7 @@ export default function App() {
 
               <button className="primary-button mt-6 w-full" disabled={isSubmitting}>
                 {isSubmitting ? "Enviando..." : "Solicitar contato"}
-                {isSubmitting ? <Sparkles className="h-5 w-5 animate-pulse" /> : <Zap className="h-5 w-5" />}
+                {isSubmitting && <Sparkles className="h-5 w-5 animate-pulse" />}
               </button>
 
               <p className="mt-4 text-xs leading-5 text-muted-foreground">
