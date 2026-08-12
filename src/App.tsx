@@ -290,6 +290,33 @@ function SelectField({ label, name, options }: SelectFieldProps) {
   )
 }
 
+function FAQItem({ question, answer, index }: { question: string; answer: string; index: number }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const answerId = `faq-answer-${index}`
+
+  return (
+    <div className={`faq-item ${isOpen ? "is-open" : ""}`}>
+      <button
+        type="button"
+        className="faq-summary"
+        aria-expanded={isOpen}
+        aria-controls={answerId}
+        onClick={() => setIsOpen((current) => !current)}
+      >
+        <span>{question}</span>
+        <span className="faq-control" aria-hidden="true">
+          <ChevronDown className="h-4 w-4" />
+        </span>
+      </button>
+      <div id={answerId} className="faq-answer" aria-hidden={!isOpen}>
+        <div>
+          <p>{answer}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function App() {
   const [formStatus, setFormStatus] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -490,16 +517,8 @@ export default function App() {
             </div>
 
             <div className="divide-y divide-white/10 border-y border-white/10" data-reveal style={revealStyle(1)}>
-              {faqs.map((faq) => (
-                <details className="faq-item group" key={faq.question}>
-                  <summary>
-                    <span>{faq.question}</span>
-                    <span className="faq-control" aria-hidden="true">
-                      <ChevronDown className="h-4 w-4" />
-                    </span>
-                  </summary>
-                  <p>{faq.answer}</p>
-                </details>
+              {faqs.map((faq, index) => (
+                <FAQItem question={faq.question} answer={faq.answer} index={index} key={faq.question} />
               ))}
             </div>
           </div>
