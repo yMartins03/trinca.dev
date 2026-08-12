@@ -526,14 +526,14 @@ export default function App() {
                 </a>
                 <a
                   className="contact-channel"
-                  href="https://wa.me/5553981268866"
+                  href="https://wa.me/555391641613"
                   target="_blank"
                   rel="noreferrer"
                 >
                   <Phone className="h-5 w-5" />
                   <span>
                     <small>Prefere chamar no WhatsApp?</small>
-                    (53) 98126-8866
+                    +55 53 9164-1613
                   </span>
                 </a>
               </div>
@@ -599,7 +599,7 @@ export default function App() {
           <p className="text-sm text-muted-foreground">Software, sites e automações para negócios digitais.</p>
 
           <div className="flex items-center gap-2">
-            <a className="social-link" href="https://wa.me/5553981268866" target="_blank" rel="noreferrer" aria-label="WhatsApp da Trivium">
+            <a className="social-link" href="https://wa.me/555391641613" target="_blank" rel="noreferrer" aria-label="WhatsApp da Trivium">
               <Phone className="h-5 w-5" />
             </a>
             <a className="social-link" href="https://www.instagram.com/triviumtech1/" target="_blank" rel="noreferrer" aria-label="Instagram da Trivium">
